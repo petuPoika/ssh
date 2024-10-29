@@ -28,9 +28,13 @@ class SpreadSheet:
                     return result
             else:
                 try:
-                    result = eval(value[1:], {"__builtins__": None}, {k: self.evaluate(k) for k in self._cells if not self.evaluate(k).startswith("#")})
+                    # Create a safe evaluation context with only integers from the spreadsheet
+                    context = {k: int(self.evaluate(k)) for k in self._cells if self.evaluate(k).isdigit()}
+                    result = eval(value[1:], {"__builtins__": None}, context)
                     if isinstance(result, float) and not result.is_integer():
                         result = "#Error"
+                    else:
+                        result = int(result)  # Ensure result is an integer if it's a valid number
                 except:
                     result = "#Error"
         else:
