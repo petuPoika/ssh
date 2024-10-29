@@ -3,6 +3,7 @@ class SpreadSheet:
 
     def __init__(self):
         self._cells = {}
+        self._evaluating = set()
 
     def set(self, cell: str, value: str) -> None:
         self._cells[cell] = value
@@ -11,20 +12,25 @@ class SpreadSheet:
         return self._cells.get(cell, '')
 
     def evaluate(self, cell: str):
+        if cell in self._evaluating:
+            return "#Circular"
+        self._evaluating.add(cell)
         value = self.get(cell)
         if value.startswith("="):
             if value.startswith("='") and value.endswith("'"):
-                return value[2:-1]
+                result = value[2:-1]
             elif value[1:].isdigit():
-                return int(value[1:])
+                result = int(value[1:])
             elif value[1:].isidentifier():
-                return self.evaluate(value[1:])
+                result = self.evaluate(value[1:])
             else:
-                return "#Error"
+                result = "#Error"
         elif value.isdigit():
-            return int(value)
+            result = int(value)
         elif value.startswith("'") and value.endswith("'"):
-            return value[1:-1]
+            result = value[1:-1]
         else:
-            return "#Error"
+            result = "#Error"
+        self._evaluating.remove(cell)
+        return result
 
