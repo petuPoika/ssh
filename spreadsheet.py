@@ -15,10 +15,12 @@ class SpreadSheet:
         value = self.get(cell)
         if value.isdigit():
             return int(value)
+        elif value.startswith("'") and value.endswith("'"):
+            return value[1:-1]
         else:
             try:
                 float(value)
                 return "#Error"
             except ValueError:
-                return value
+                return "#Error"
 
