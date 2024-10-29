@@ -73,3 +73,7 @@ class TestSpreadSheet(TestCase):
         spreadsheet.set("A1", "=1/0")
         self.assertEqual("#Error", spreadsheet.evaluate("A1"))
 
+    def test_evaluate_valid_formula_sum_two(self):
+        spreadsheet = SpreadSheet()
+        spreadsheet.set("A1", "=1+3*2")
+        self.assertEqual(7, spreadsheet.evaluate("A1"))
