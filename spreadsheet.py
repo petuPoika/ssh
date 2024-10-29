@@ -23,6 +23,8 @@ class SpreadSheet:
                 result = int(value[1:])
             elif value[1:].isidentifier():
                 result = self.evaluate(value[1:])
+            elif value[1:].replace('+', '').replace('-', '').replace('*', '').replace('/', '').isdigit():
+                result = eval(value[1:])
             else:
                 result = "#Error"
         elif value.isdigit():

@@ -57,3 +57,8 @@ class TestSpreadSheet(TestCase):
         spreadsheet.set("A1", "=B2")
         spreadsheet.set("B2", "=A1")
         self.assertEqual("#Circular", spreadsheet.evaluate("A1"))
+
+    def test_evaluate_valid_formula_sum(self):
+        spreadsheet = SpreadSheet()
+        spreadsheet.set("A1", "=1+3")
+        self.assertEqual(4, spreadsheet.evaluate("A1"))
